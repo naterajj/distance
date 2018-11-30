@@ -40,7 +40,6 @@ func main() {
 	records, err := csv2records(input)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 
 	// channel to receive the distance calculations
@@ -91,7 +90,6 @@ func collectDistances(reschan chan Distance, wg *sync.WaitGroup, output string) 
 	defer file.Close()
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 
 	// create csv writer
@@ -112,7 +110,6 @@ func collectDistances(reschan chan Distance, wg *sync.WaitGroup, output string) 
 			err := writer.WriteAll(buffer)
 			if err != nil {
 				log.Fatal(err)
-				return
 			}
 			buffer = make([][]string, 3)
 			count = 0
@@ -122,7 +119,6 @@ func collectDistances(reschan chan Distance, wg *sync.WaitGroup, output string) 
 		err := writer.WriteAll(buffer)
 		if err != nil {
 			log.Fatal(err)
-			return
 		}
 	}
 }
@@ -144,14 +140,12 @@ func csv2records(path string) ([]Record, error) {
 	in, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatal(err)
-		return nil, err
 	}
 	r := csv.NewReader(bytes.NewReader(in))
 	r.Comma = ','
 	records, err := r.ReadAll()
 	if err != nil {
 		log.Fatal(err)
-		return nil, err
 	}
 	result := make([]Record, len(records)-1)
 	for i, record := range records[1:] {
